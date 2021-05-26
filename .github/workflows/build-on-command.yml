@@ -1,4 +1,4 @@
-name: gradle-ci
+name: build-on-command
 
 on:
   workflow_dispatch:
