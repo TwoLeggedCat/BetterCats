@@ -15,19 +15,19 @@ import java.util.Collection;
 import java.util.EnumSet;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class PlayWithYarnGoal implements Goal<Cat> {
+public class PlayWithStringGoal implements Goal<Cat> {
     private final GoalKey<Cat> key;
     private final Cat cat;
     private Item string;
 
-    public PlayWithYarnGoal(Plugin plugin, Cat cat) {
+    public PlayWithStringGoal(Plugin plugin, Cat cat) {
         this.key = GoalKey.of(Cat.class, new NamespacedKey(plugin, "play_with_string"));
         this.cat = cat;
     }
 
     @Override
     public boolean shouldActivate() {
-        return findString();
+        return (findString() && Math.random() < 0.7);
     }
 
     @Override

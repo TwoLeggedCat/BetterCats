@@ -1,7 +1,7 @@
 package me.twoleggedcat.bettercats;
 
 import com.destroystokyo.paper.event.entity.EntityAddToWorldEvent;
-import me.twoleggedcat.bettercats.ai.PlayWithYarnGoal;
+import me.twoleggedcat.bettercats.ai.PlayWithStringGoal;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Cat;
@@ -33,7 +33,7 @@ public class Main extends JavaPlugin implements Listener {
     public void onEntityLoad(EntityAddToWorldEvent e) {
         if (e.getEntityType() == EntityType.CAT) {
             Cat cat = (Cat) e.getEntity();
-            Bukkit.getMobGoals().addGoal(cat, 11, new PlayWithYarnGoal(this, cat));
+            Bukkit.getMobGoals().addGoal(cat, 11, new PlayWithStringGoal(this, cat));
         }
     }
 
