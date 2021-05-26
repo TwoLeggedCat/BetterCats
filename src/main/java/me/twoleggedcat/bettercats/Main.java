@@ -22,11 +22,6 @@ public class Main extends JavaPlugin implements Listener {
     @Override
     public void onEnable() {
         Bukkit.getPluginManager().registerEvents(this, this);
-        /*for (Entity entity : Bukkit.getWorld("world").getEntities()) {
-            if (entity instanceof Cat cat) {
-                Bukkit.getMobGoals().addGoal(cat, 14, new PlayWithYarnGoal(this, cat));
-            }
-        }*/
     }
 
     @Override
@@ -39,7 +34,6 @@ public class Main extends JavaPlugin implements Listener {
         if (e.getEntityType() == EntityType.CAT) {
             Cat cat = (Cat) e.getEntity();
             Bukkit.getMobGoals().addGoal(cat, 14, new PlayWithYarnGoal(this, cat));
-            Bukkit.getLogger().info("Added PlayWithYarnGoal to one cat upon addition to world");
         }
     }
 
