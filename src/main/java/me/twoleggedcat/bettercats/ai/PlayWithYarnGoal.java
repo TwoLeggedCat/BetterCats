@@ -27,7 +27,7 @@ public class PlayWithYarnGoal implements Goal<Cat> {
 
     @Override
     public boolean shouldActivate() {
-        return true;
+        return findString();
     }
 
     @Override
@@ -48,12 +48,8 @@ public class PlayWithYarnGoal implements Goal<Cat> {
 
     @Override
     public void tick() {
-        if (string == null || !string.isValid()) {
-            // Try to find a new string, and return if none is found
-            string = getNearbyStringItem();
-            if (string == null)
-                return;
-        }
+        if (!findString())
+            return;
         cat.getPathfinder().moveTo(string.getLocation(), 1.2);
         if (string.getLocation().distanceSquared(cat.getLocation()) < 1) {
             string.setVelocity(new Vector(randomDouble(-0.25, 0.25), randomDouble(-0.25, 0.25), randomDouble(-0.25, 0.25)));
@@ -83,6 +79,13 @@ public class PlayWithYarnGoal implements Goal<Cat> {
             i++;
         }
         return null;
+    }
+
+    private boolean findString() {
+        if (string == null || !string.isValid()) {
+            string = getNearbyStringItem();
+            return string != null;
+        } else return true;
     }
 
     private int randomInt(int min, int max) {
