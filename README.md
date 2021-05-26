@@ -1,4 +1,4 @@
-# betterCats
+# BetterCats
 
 Bukkit plugin to make Minecraft cats better.
 

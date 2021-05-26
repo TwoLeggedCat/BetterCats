@@ -1,5 +1,7 @@
-package me.twoleggedcat.betterCats;
+package me.twoleggedcat.bettercats;
 
+import com.destroystokyo.paper.event.entity.EntityAddToWorldEvent;
+import me.twoleggedcat.bettercats.ai.PlayWithYarnGoal;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Cat;
@@ -15,17 +17,30 @@ import java.util.HashMap;
 import java.util.UUID;
 
 public class Main extends JavaPlugin implements Listener {
-
-    public HashMap<UUID, Integer> purrTimes = new HashMap<>();
+    public final HashMap<UUID, Integer> purrTimes = new HashMap<>();
 
     @Override
     public void onEnable() {
         Bukkit.getPluginManager().registerEvents(this, this);
+        /*for (Entity entity : Bukkit.getWorld("world").getEntities()) {
+            if (entity instanceof Cat cat) {
+                Bukkit.getMobGoals().addGoal(cat, 14, new PlayWithYarnGoal(this, cat));
+            }
+        }*/
     }
 
     @Override
     public void onDisable() {
 
+    }
+
+    @EventHandler
+    public void onEntityLoad(EntityAddToWorldEvent e) {
+        if (e.getEntityType() == EntityType.CAT) {
+            Cat cat = (Cat) e.getEntity();
+            Bukkit.getMobGoals().addGoal(cat, 14, new PlayWithYarnGoal(this, cat));
+            Bukkit.getLogger().info("Added PlayWithYarnGoal to one cat upon addition to world");
+        }
     }
 
     @EventHandler
