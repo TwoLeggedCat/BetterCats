@@ -35,7 +35,7 @@ public class Main extends JavaPlugin implements Listener {
     public void onEntityLoad(EntityAddToWorldEvent e) {
         if (e.getEntityType() == EntityType.CAT) {
             Cat cat = (Cat) e.getEntity();
-            Bukkit.getMobGoals().addGoal(cat, 11, new PlayWithStringGoal(this, cat));
+            Bukkit.getMobGoals().addGoal(cat, 8, new PlayWithStringGoal(this, cat));
         }
     }
 
