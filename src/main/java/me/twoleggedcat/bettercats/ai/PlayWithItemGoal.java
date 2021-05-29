@@ -15,20 +15,21 @@ import java.util.Collection;
 import java.util.EnumSet;
 import java.util.concurrent.ThreadLocalRandom;
 
-@Deprecated
-public class PlayWithStringGoal implements Goal<Cat> {
+public class PlayWithItemGoal implements Goal<Cat> {
     private final GoalKey<Cat> key;
     private final Cat cat;
-    private Item string;
+    private final Material targetType;
+    private Item targetItem;
 
-    public PlayWithStringGoal(Plugin plugin, Cat cat) {
-        this.key = GoalKey.of(Cat.class, new NamespacedKey(plugin, "play_with_string"));
+    public PlayWithItemGoal(Plugin plugin, Cat cat, Material targetType) {
+        this.key = GoalKey.of(Cat.class, new NamespacedKey(plugin, "play_with_item"));
         this.cat = cat;
+        this.targetType = targetType;
     }
 
     @Override
     public boolean shouldActivate() {
-        return (findString() && Math.random() < 0.7);
+        return (findItem() && Math.random() < 0.7);
     }
 
     @Override
@@ -49,11 +50,11 @@ public class PlayWithStringGoal implements Goal<Cat> {
 
     @Override
     public void tick() {
-        if (!findString())
+        if (!findItem())
             return;
-        cat.getPathfinder().moveTo(string.getLocation(), 1.2);
-        if (string.getLocation().distanceSquared(cat.getLocation()) < 1) {
-            string.setVelocity(new Vector(randomDouble(-0.25, 0.25), randomDouble(-0.25, 0.25), randomDouble(-0.25, 0.25)));
+        cat.getPathfinder().moveTo(targetItem.getLocation(), 1.2);
+        if (targetItem.getLocation().distanceSquared(cat.getLocation()) < 1) {
+            targetItem.setVelocity(new Vector(randomDouble(-0.25, 0.25), randomDouble(-0.25, 0.25), randomDouble(-0.25, 0.25)));
         }
     }
 
@@ -67,25 +68,25 @@ public class PlayWithStringGoal implements Goal<Cat> {
         return EnumSet.of(GoalType.MOVE, GoalType.LOOK);
     }
 
-    private Item getNearbyStringItem() {
-        Collection<Item> strings = cat.getWorld().getNearbyEntitiesByType(Item.class, cat.getLocation(), 10, 5, 10,
-                item -> item.getItemStack().getType() == Material.STRING);
-        if (strings.size() == 0)
+    private Item getNearbyTargetItem() {
+        Collection<Item> items = cat.getWorld().getNearbyEntitiesByType(Item.class, cat.getLocation(), 10, 5, 10,
+                item -> item.getItemStack().getType() == targetType);
+        if (items.size() == 0)
             return null;
-        int rand = randomInt(0, strings.size());
+        int rand = randomInt(0, items.size());
         int i = 0;
-        for (Item string : strings) {
+        for (Item item : items) {
             if (i == rand)
-                return string;
+                return item;
             i++;
         }
         return null;
     }
 
-    private boolean findString() {
-        if (string == null || !string.isValid()) {
-            string = getNearbyStringItem();
-            return string != null;
+    private boolean findItem() {
+        if (targetItem == null || !targetItem.isValid()) {
+            targetItem = getNearbyTargetItem();
+            return targetItem != null;
         } else return true;
     }
 

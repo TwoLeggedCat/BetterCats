@@ -1,18 +1,25 @@
 package me.twoleggedcat.bettercats;
 
 import com.destroystokyo.paper.event.entity.EntityAddToWorldEvent;
-import me.twoleggedcat.bettercats.ai.PlayWithStringGoal;
+import me.twoleggedcat.bettercats.ai.PlayWithItemGoal;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Cat;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Item;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryOpenEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -35,7 +42,27 @@ public class Main extends JavaPlugin implements Listener {
     public void onEntityLoad(EntityAddToWorldEvent e) {
         if (e.getEntityType() == EntityType.CAT) {
             Cat cat = (Cat) e.getEntity();
-            Bukkit.getMobGoals().addGoal(cat, 8, new PlayWithStringGoal(this, cat));
+            Bukkit.getMobGoals().addGoal(cat, 8, new PlayWithItemGoal(this, cat, Material.SALMON));
+            Bukkit.getMobGoals().addGoal(cat, 8, new PlayWithItemGoal(this, cat, Material.STRING));
+        }
+    }
+
+    @EventHandler
+    public void onInventoryOpen(InventoryOpenEvent e) {
+        Inventory inv = e.getInventory();
+        if (inv.getType() == InventoryType.CHEST) {
+            Collection<Entity> entities = e.getPlayer().getWorld().getNearbyEntities(e.getPlayer().getLocation(), 10, 10, 10);
+            for (Entity entity : entities) {
+                if (Math.random() < 0.15 && entity instanceof Cat cat) {
+                    if (!cat.hasLineOfSight(inv.getLocation()))
+                        return;
+                    cat.lookAt(inv.getLocation());
+                    cat.getWorld().playSound(cat.getLocation(), Sound.ENTITY_CAT_AMBIENT, 1, 1);
+                    inv.removeItem(new ItemStack(Material.SALMON, 1));
+                    Item salmon = (Item) cat.getWorld().spawnEntity(cat.getLocation().add(cat.getLocation().getDirection()), EntityType.DROPPED_ITEM);
+                    salmon.setItemStack(new ItemStack(Material.SALMON));
+                }
+            }
         }
     }
 
