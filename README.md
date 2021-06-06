@@ -8,6 +8,7 @@ This plugin presently does two things:
 
 1. Cats make noises when you right-click them. Being the original purpose for this plugin, this is all I could come up with when someone asked me "How do I pet cats?"
 2. Cats play with string left as items on the ground.
+3. Cats have a chance to steal salmon out of nearby chests when players open them. They then play with the salmon for a while and eventually eat it if the player doesn't take it back.
 
 ## Where to download?
 
