@@ -1,4 +1,5 @@
 plugins {
+    id "xyz.jpenilla.run-paper" version "1.0.4"
     id 'java'
 }
 
@@ -12,10 +13,20 @@ repositories {
     }
 }
 
+tasks {
+    runServer {
+      minecraftVersion "1.17.1"
+    }
+
+    build {
+      dependsOn jar
+    }
+}
+
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
-    compileOnly 'com.destroystokyo.paper:paper-api:1.16.5-R0.1-SNAPSHOT'
+    compileOnly 'io.papermc.paper:paper-api:1.17.1-R0.1-SNAPSHOT'
 }
 
 test {
