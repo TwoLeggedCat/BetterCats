@@ -53,7 +53,7 @@ public class Main extends JavaPlugin implements Listener {
         if (inv.getType() == InventoryType.CHEST) {
             Collection<Entity> entities = e.getPlayer().getWorld().getNearbyEntities(e.getPlayer().getLocation(), 10, 10, 10);
             for (Entity entity : entities) {
-                if (Math.random() < 0.15 && entity instanceof Cat cat) {
+                if (entity instanceof Cat cat && Math.random() < 0.15) {
                     if (!cat.hasLineOfSight(inv.getLocation()))
                         return;
                     cat.lookAt(inv.getLocation());
