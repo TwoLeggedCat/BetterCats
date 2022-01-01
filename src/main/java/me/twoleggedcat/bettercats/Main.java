@@ -50,7 +50,7 @@ public class Main extends JavaPlugin implements Listener {
     @EventHandler
     public void onInventoryOpen(InventoryOpenEvent e) {
         Inventory inv = e.getInventory();
-        if (inv.getType() == InventoryType.CHEST) {
+        if (inv.getType() == InventoryType.CHEST && inv.contains(Material.SALMON)) {
             Collection<Entity> entities = e.getPlayer().getWorld().getNearbyEntities(e.getPlayer().getLocation(), 10, 10, 10);
             for (Entity entity : entities) {
                 if (entity instanceof Cat cat && Math.random() < 0.15) {
